@@ -1,43 +1,6 @@
 
-
-
-enum MESSAGES {m1="Here is your cart !" , m2="Product purchased , here is the invoice!", divider="-----------------------------------------------"}
-
-let total_users:{id:string, name:string , email_address : string , phone_no: number , carts:string[]}[]  = []
-
-type product_list = {id: string , name:string, total_remaining_items:number , price:number};
-
-let products: product_list[] = [
-    {
-        id:'e21',
-        name:'Laptop', 
-        total_remaining_items : 4, 
-        price: 45000
-
-    },
-    {
-        id:'e22',
-        name:'MI Redmi Pro 10', 
-        total_remaining_items : 4, 
-        price: 35000
-
-    },
-    {
-        id:'e23',
-        name:'Razer Blade', 
-        total_remaining_items : 4, 
-        price: 120000
-
-    },
-    {
-        id:'e24',
-        name:'Samsung M62', 
-        total_remaining_items : 4, 
-        price: 36000
-
-    }
-
-]
+import {MESSAGES} from './enums'
+import {total_users, products } from './schema'
 
 // Interfaces 
 interface User { 
@@ -48,7 +11,6 @@ interface User {
     carts : string[] 
 
 }
-
 interface Carts {
     id : string;
     amount : number;
@@ -81,7 +43,6 @@ class Users implements User{
         }
         total_users.push(created)
         return created
-
     }
 
     removeUser(email_address:string){
@@ -94,17 +55,13 @@ class Users implements User{
                 return user 
             }
         return 
-        
-
     }
-
 }
 
 
 class Cart extends Users implements Carts{
     
     amount : number;
-
     constructor(name:string , email_address:string, phone_no:number , amount : number = 0){
         super(name , email_address, phone_no)
         this.amount = amount
@@ -118,8 +75,7 @@ class Cart extends Users implements Carts{
             amount
         }
     }
-
-
+    
     checkProductId(product_id:string){
         let products_ids = []
         for (let product in products){
@@ -146,9 +102,8 @@ class Cart extends Users implements Carts{
         }else{
          console.log("Error : Correct product id is required .")
      }
-     return 
-        
-     }
+        return 
+    }
 
     view_cart_details(user_id:string){
         let f_user = this.filterUser(user_id)
@@ -218,7 +173,7 @@ let c1 = new Cart(u1.name , u1.email_address, u1.phone_no)
 c1.updateCart(c1.id, "e24")
 c1.updateCart(c1.id, "e23")
 // Providing incorrect id will fail .
-c1.updateCart("u15", "e23")
+c1.updateCart("u12", "e23")
 
 // View cart of given user 
 console.log(MESSAGES.m1)
