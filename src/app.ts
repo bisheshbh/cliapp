@@ -158,7 +158,7 @@ class Cart extends Users implements Carts{
 }
 
 
-class Arguments { 
+class Main { 
 
     args: string[]
     name : string
@@ -195,8 +195,8 @@ class Arguments {
 }
 let u1 = new Users("Bishesh", "biseshbhattaraiii@gmail.com", 94343434)
 
-let a = new Arguments(u1.name, u1.email_address, u1.phone_no)
-a.controllers()
+
+
 
 
 
