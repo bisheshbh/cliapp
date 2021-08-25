@@ -1,7 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const enums_1 = require("./enums");
-const schema_1 = require("./schema");
+const messages_1 = require("./enums/messages");
+const arguments_1 = require("./enums/arguments");
+const users_1 = require("./schemas/users");
+const products_1 = require("./schemas/products");
+const readline_1 = __importDefault(require("readline"));
 class Users {
     constructor(name, email_address, phone_no, carts = []) {
         this.id = "u12";
@@ -18,15 +24,15 @@ class Users {
             phone_no: this.phone_no,
             carts: this.carts
         };
-        schema_1.total_users.push(created);
+        users_1.total_users.push(created);
         return created;
     }
     removeUser(email_address) {
         console.log(email_address);
     }
     filterUser(id_value) {
-        for (let user in schema_1.total_users)
-            if (schema_1.total_users[user].id === id_value) {
+        for (let user in users_1.total_users)
+            if (users_1.total_users[user].id === id_value) {
                 return user;
             }
         return;
@@ -43,8 +49,8 @@ class Cart extends Users {
     }
     checkProductId(product_id) {
         let products_ids = [];
-        for (let product in schema_1.products) {
-            products_ids.push(schema_1.products[product].id);
+        for (let product in products_1.products) {
+            products_ids.push(products_1.products[product].id);
         }
         if (products_ids.includes(product_id)) {
             return true;
@@ -55,7 +61,7 @@ class Cart extends Users {
         if (this.checkProductId(product_id)) {
             let f_user = this.filterUser(id);
             if (f_user) {
-                schema_1.total_users[+f_user].carts.push(product_id);
+                users_1.total_users[+f_user].carts.push(product_id);
             }
             else {
                 console.log("Error : Correct user id is required");
@@ -66,14 +72,14 @@ class Cart extends Users {
         }
         return;
     }
-    view_cart_details(user_id) {
+    viewCartDetails(user_id) {
         let f_user = this.filterUser(user_id);
         if (f_user) {
             let viewing_cart = [];
-            let carts_list = schema_1.total_users[+f_user].carts;
+            let carts_list = users_1.total_users[+f_user].carts;
             for (let i in carts_list) {
-                for (let product in schema_1.products) {
-                    let identity = schema_1.products[product];
+                for (let product in products_1.products) {
+                    let identity = products_1.products[product];
                     if (carts_list[i] === identity.id) {
                         viewing_cart.push({ id: identity.id, name: identity.name, price: identity.price });
                     }
@@ -86,26 +92,26 @@ class Cart extends Users {
         }
         return;
     }
-    view_cart(user_id, detail = false) {
+    viewCart(user_id, detail = false) {
         let f_user = this.filterUser(user_id);
         if (f_user) {
             if (detail) {
             }
-            return schema_1.total_users[+f_user].carts;
+            return users_1.total_users[+f_user].carts;
         }
         else {
             return "Warning : Correct user id is required";
         }
     }
-    buy_cart() {
+    buyCart() {
         let total_amount = 0;
-        let cart = this.view_cart(this.id);
+        let cart = this.viewCart(this.id);
         if (typeof cart != 'string') {
             for (let c in cart) {
-                for (let product in schema_1.products) {
-                    if (cart[+c] === schema_1.products[product].id) {
-                        total_amount += schema_1.products[product].price;
-                        schema_1.products[product].total_remaining_items -= 1;
+                for (let product in products_1.products) {
+                    if (cart[+c] === products_1.products[product].id) {
+                        total_amount += products_1.products[product].price;
+                        products_1.products[product].total_remaining_items -= 1;
                     }
                 }
             }
@@ -116,17 +122,40 @@ class Cart extends Users {
         return;
     }
 }
+class Arguments {
+    constructor(name, email, phoneno, args = []) {
+        this.args = args;
+        this.name = name;
+        this.email = email;
+        this.phoneno = phoneno;
+        this.initReadline = readline_1.default.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
+    }
+    monitorAns(answer) {
+        if (answer === arguments_1.ARGS.product) {
+            console.log(products_1.products);
+        }
+    }
+    controllers() {
+        this.initReadline.question('Press p to see products list', (answer) => {
+            this.monitorAns(answer);
+        });
+    }
+}
 let u1 = new Users("Bishesh", "biseshbhattaraiii@gmail.com", 94343434);
-u1.createUser();
+let a = new Arguments(u1.name, u1.email_address, u1.phone_no);
+a.controllers();
 let c1 = new Cart(u1.name, u1.email_address, u1.phone_no);
 c1.updateCart(c1.id, "e24");
 c1.updateCart(c1.id, "e23");
-c1.updateCart("u12", "e23");
-console.log(enums_1.MESSAGES.m1);
-console.log(c1.view_cart_details("u12"));
-console.log(enums_1.MESSAGES.divider);
-console.log(enums_1.MESSAGES.m2);
-console.log(enums_1.MESSAGES.divider);
-console.log(c1.buy_cart());
-console.log(enums_1.MESSAGES.divider);
+c1.updateCart("u2", "e23");
+console.log(messages_1.MESSAGES.m1);
+console.log(c1.viewCartDetails("u12"));
+console.log(messages_1.MESSAGES.divider);
+console.log(messages_1.MESSAGES.m2);
+console.log(messages_1.MESSAGES.divider);
+console.log(c1.buyCart());
+console.log(messages_1.MESSAGES.divider);
 //# sourceMappingURL=app.js.map

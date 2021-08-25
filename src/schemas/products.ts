@@ -1,6 +1,3 @@
-export let total_users:
-{id:string, name:string , email_address : string , phone_no: number , carts:string[]}[]  = []
-
 export type product_list = 
 {id: string , name:string, total_remaining_items:number , price:number};
 

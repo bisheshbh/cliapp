@@ -1,21 +1,14 @@
 
-import {MESSAGES} from './enums'
-import {total_users, products } from './schema'
+// import { isThisTypeNode } from 'typescript';
+import {MESSAGES} from './enums/messages'
+import {ARGS} from './enums/arguments'
+import {total_users} from './schemas/users'
+import { products } from './schemas/products'
+import {Carts} from './interfaces/CartInterface'
+import {User} from './interfaces/UserInterface'
+import readline from 'readline'
 
 // Interfaces 
-interface User { 
-    id : string;
-    name : string ; 
-    email_address : string;
-    phone_no: number,
-    carts : string[] 
-
-}
-interface Carts {
-    id : string;
-    amount : number;
-}
-
 class Users implements User{
     id :string ;
     name : string;
@@ -105,7 +98,7 @@ class Cart extends Users implements Carts{
         return 
     }
 
-    view_cart_details(user_id:string){
+    viewCartDetails(user_id:string){
         let f_user = this.filterUser(user_id)
         if(f_user){
         type cart_view_list = {id: string , name:string, price:number};
@@ -127,7 +120,7 @@ class Cart extends Users implements Carts{
     return
 }
 
-    view_cart(user_id:string, detail:boolean = false){
+    viewCart(user_id:string, detail:boolean = false){
       
         let f_user = this.filterUser(user_id)
         if (f_user){
@@ -142,10 +135,10 @@ class Cart extends Users implements Carts{
          
     }
 
-    buy_cart(){
+    buyCart(){
         // Total amount calculated at runtime 
         let total_amount = 0;
-        let cart = this.view_cart(this.id)
+        let cart = this.viewCart(this.id)
         if(typeof cart != 'string'){
             for (let c in cart){ 
                 for (let product in products){
@@ -164,23 +157,66 @@ class Cart extends Users implements Carts{
     }
 }
 
-// Create new User
+
+class Arguments { 
+
+    args: string[]
+    name : string
+    email : string
+    phoneno : number
+    initReadline:any
+
+    constructor(name : string , email : string, phoneno:number, args:string[]=[]){
+        this.args = args
+        this.name = name 
+        this.email = email 
+        this.phoneno = phoneno
+        this.initReadline = readline.createInterface({
+            input:process.stdin,
+            output: process.stdout
+        })
+    }
+
+    monitorAns(answer:string){
+
+        if(answer === ARGS.product){
+            console.log(products)
+        }
+    }
+
+    controllers(){
+        this.initReadline.question('Press p to see products list', (answer:string)=> {
+            this.monitorAns(answer)
+        })
+    }
+
+
+
+}
 let u1 = new Users("Bishesh", "biseshbhattaraiii@gmail.com", 94343434)
-u1.createUser()
-// Create cart
+
+let a = new Arguments(u1.name, u1.email_address, u1.phone_no)
+a.controllers()
+
+
+
+
+// let u1 = new Users("Bishesh", "biseshbhattaraiii@gmail.com", 94343434)
+// u1.createUser()
+// // Create cart
 let c1 = new Cart(u1.name , u1.email_address, u1.phone_no)
 // Add given product id to cart of given user id . 
 c1.updateCart(c1.id, "e24")
 c1.updateCart(c1.id, "e23")
 // Providing incorrect id will fail .
-c1.updateCart("u12", "e23")
+c1.updateCart("u2", "e23")
 
 // View cart of given user 
 console.log(MESSAGES.m1)
-console.log(c1.view_cart_details("u12"))
+console.log(c1.viewCartDetails("u12"))
 console.log(MESSAGES.divider)
 console.log(MESSAGES.m2)
 console.log(MESSAGES.divider)
 // Buy cart of current user , invoice of current user is sent . 
-console.log(c1.buy_cart())
+console.log(c1.buyCart())
 console.log(MESSAGES.divider)
