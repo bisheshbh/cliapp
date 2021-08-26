@@ -1,1 +1,1 @@
-export enum ARGS {product="p", buy="b", cancel="x", continue="c", cart="v"}
+export enum ARGS {product="p", buy="b", cancel="x", continue="c", cart="v", add="a"}

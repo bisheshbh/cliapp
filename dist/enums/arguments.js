@@ -8,5 +8,6 @@ var ARGS;
     ARGS["cancel"] = "x";
     ARGS["continue"] = "c";
     ARGS["cart"] = "v";
+    ARGS["add"] = "a";
 })(ARGS = exports.ARGS || (exports.ARGS = {}));
 //# sourceMappingURL=arguments.js.map
