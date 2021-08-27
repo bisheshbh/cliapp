@@ -20,11 +20,13 @@ class Cart extends User_1.Users {
         };
     }
     checkProductId(product_id) {
-        let products_ids = [];
-        for (let product in products_1.products) {
-            products_ids.push(products_1.products[product].id);
-        }
-        if (products_ids.includes(product_id)) {
+        let valid = 0;
+        products_1.products.map((product, index) => {
+            if (products_1.products[index].id === product_id && product) {
+                valid = 1;
+            }
+        });
+        if (valid) {
             return true;
         }
         return false;
@@ -55,47 +57,38 @@ class Cart extends User_1.Users {
         if (f_user) {
             let viewing_cart = [];
             let carts_list = users_1.total_users[+f_user].carts;
-            for (let i in carts_list) {
-                for (let product in products_1.products) {
-                    let identity = products_1.products[product];
-                    if (carts_list[i] === identity.id) {
-                        viewing_cart.push({ id: identity.id, name: identity.name, price: identity.price });
+            carts_list.map((cart_item) => {
+                products_1.products.map((_product_item, index) => {
+                    if (cart_item === products_1.products[index].id) {
+                        viewing_cart.push({ id: products_1.products[index].id, name: products_1.products[index].name, price: products_1.products[index].price });
                     }
-                }
-            }
+                });
+            });
             return viewing_cart;
         }
-        else {
-            return "Error : Correct user id is required";
-        }
-        return;
+        return "Error : Correct user id is required";
     }
-    viewCart(user_id, detail = false) {
+    viewCart(user_id) {
         let f_user = this.filterUser(user_id);
         if (f_user) {
-            if (detail) {
-            }
             return users_1.total_users[+f_user].carts;
         }
-        else {
-            return "Warning : Correct user id is required";
-        }
+        return "Warning : Correct user id is required";
     }
     buyCart() {
-        let total_amount = 0;
         let cart = this.viewCart(this.id);
         if (typeof cart != 'string') {
-            for (let c in cart) {
-                for (let product in products_1.products) {
-                    if (cart[+c] === products_1.products[product].id) {
-                        total_amount += products_1.products[product].price;
-                        products_1.products[product].total_remaining_items -= 1;
+            cart.map((c) => {
+                products_1.products.map((product, index) => {
+                    if (c === products_1.products[index].id) {
+                        this.amount += products_1.products[index].price;
+                        console.log(product);
                     }
-                }
-            }
+                });
+            });
         }
         if (typeof cart != 'string') {
-            return this.generateInvoice(total_amount, cart);
+            return this.generateInvoice(this.amount, cart);
         }
         return;
     }

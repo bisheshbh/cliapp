@@ -21,9 +21,6 @@ class Users {
         users_1.total_users.push(created);
         return created;
     }
-    removeUser(email_address) {
-        console.log(email_address);
-    }
     filterUser(id_value) {
         for (let user in users_1.total_users)
             if (users_1.total_users[user].id === id_value) {

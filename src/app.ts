@@ -79,12 +79,5 @@ class Main extends Cart {
     }
 }
 
-
-
-
-
-
-
-
 let m = new Main(c1.name , c1.email_address, c1.phone_no)
 m.controller()

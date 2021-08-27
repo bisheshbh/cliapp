@@ -11,7 +11,7 @@ export class Users implements User{
     carts: string[] 
 
     constructor(name:string , email_address:string, phone_no:number, carts:string[] = []){
-        // Static user id allocation , can be made dynamic uuid
+     
         this.id = "u12" 
         this.name = name 
         this.email_address = email_address
@@ -20,7 +20,7 @@ export class Users implements User{
     }
 
     createUser(): object{
-        // check if user exists [TODO]
+       
         let created = { 
             id : this.id,
             name : this.name , 
@@ -32,13 +32,11 @@ export class Users implements User{
         return created
     }
 
-    removeUser(email_address:string){
-        console.log(email_address)
-    }
 
     filterUser(id_value:string){
         for (let user in total_users)
-            if(total_users[user].id === id_value){
+            if(total_users[user].id === id_value)
+            {
                 return user 
             }
         return 
