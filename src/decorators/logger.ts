@@ -1,10 +1,11 @@
-// export function logger(id:string , carts : string[], amount : number){
-//     return function<T> (originalConstructor:T) {
-//         return class extends originalConstructor{
-//             constructor(){
-//                 super();
-//                 console.log(id , carts , amount)
-//             }
-//         }
-//     }
-// }
+export function logger(){
+    return function<T extends {new(...args:any[]):{name:string, carts:String[], amount:number}}> (originalConstructor:T) {
+        return class extends originalConstructor{
+            constructor(..._args:any[]){
+                super();
+                console.log(this.carts , this.amount)
+                
+            }
+        }
+    }
+}

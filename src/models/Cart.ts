@@ -109,10 +109,10 @@ export class Cart extends Users implements Carts{
         {
              
             cart.map((c:string) => {
-                products.map((product:object, index:number) => {
+                products.map((_product:object, index:number) => {
                     if(c === products[index].id){
                         this.amount += products[index].price
-                        console.log(product)
+                        let l = new Logger()
                     }
                 })
             })
@@ -120,6 +120,7 @@ export class Cart extends Users implements Carts{
         if(typeof cart != 'string')
         {
             return this.generateInvoice(this.amount, cart)
+            
         }
         return
     }
